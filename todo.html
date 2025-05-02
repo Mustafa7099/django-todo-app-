@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    <title>Todo</title>
+
+    <!-- FullCalendar CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+    <script src="{% static 'js/script.js' %}" defer></script>        
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Hello {{ user.first_name|default:"Guest" }}</h1>
+    </header>
+
+    <div id="calendar"></div>
+
+    <div>
+        <h2>Get Things Done</h2>
+        <p>Todo List</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="Add today's task" required name="text">
+        <button type="submit">Add Task</button>
+    </form>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="todo-list">
+        {% for task in res %}
+            <div class="task-box">
+                <h5 class="inline">{{ task.srno }}</h5>
+                <div class="status-box">
+                    <input type="checkbox" class="status-checkbox" id="task-{{ task.srno }}" 
+                        data-task-id="{{ task.srno }}" {% if task.status %}checked{% endif %}>
+                    <label for="task-{{ task.srno }}">{{ task.text }}</label>
+                </div>
+                <h6 class="inline">{{ task.date }}</h6>
+                <div>
+                    <a href="{% url 'todo_edit' task.srno %}">Edit</a>
+                    <a href="{% url 'delete_task' task.srno %}">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

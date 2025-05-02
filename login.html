@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static  'css/style.css'  %}">
+    <script src="{% static 'js/script.js' %}"></script>  
+    <title>login</title>
+
+</head>
+<body>
+    <h2>  signup  </h2>
+    
+    
+    <form method="post">  {# Add method="post" #}
+        {% csrf_token %} {# Add CSRF token for security #}
+
+        {% if messages %}
+        {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+        
+        {% for field in login_form %}   {# Iterate through the form's fields #}
+            <div class="signup-login">
+                {{ field.label_tag }} {# Render the label #}
+                {{ field }} {# Render the widget (input) #}
+                {% if field.errors %} {# Display errors, if any #}
+                    <div class="errorlist">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit">login</button> {# Add a submit button #}
+        <p> if you have not an account    </p>
+        <a href="{% url  'signup'  %}"> signup </a>
+
+
+    </form>
+    
+</body>
+</html>

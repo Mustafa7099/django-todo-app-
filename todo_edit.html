@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static  'css/style.css'  %}">
+    <script src="{% static 'js/script.js' %}" defer ></script>
+    <title>  todo edit   </title>
+</head>
+<body>
+    <h1>hello {{user}} </h1>
+    <div>
+        <h2>get things to edit</h2>
+    </div>
+    <h2> todo edit </h2>
+    <form method="post">  {# Add method="post" #}
+
+        {% if messages %}
+        {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <audio id="messageSound" src="{% static 'sounds/notification.wav' %}"></audio>
+
+    {% endif %}
+
+
+        {% csrf_token %} {# Add CSRF token for security #}
+        
+        
+            <input type="text" placeholder="add today s task"  required name="text"  value="{{ task.text|escape }}"    >
+
+        <button type="submit">update task</button> {# Add a submit button #}
+        
+    </form>
+       
+</body>
+</html>
+
